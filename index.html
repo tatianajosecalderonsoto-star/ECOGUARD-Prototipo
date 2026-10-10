@@ -1,0 +1,364 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOGUARD | Monitoreo Ambiental</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f2f7f1;
+            color: #263b2b;
+        }
+
+        header {
+            background: #176b45;
+            color: white;
+            padding: 24px 8%;
+        }
+
+        header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            color: #e0f3e5;
+        }
+
+        nav {
+            background: #fff;
+            padding: 15px 8%;
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #dce8dc;
+        }
+
+        nav a {
+            color: #176b45;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .bienvenida {
+            margin-bottom: 25px;
+        }
+
+        .bienvenida h2 {
+            margin-bottom: 8px;
+            font-size: 26px;
+        }
+
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 18px;
+            margin: 25px 0 35px;
+        }
+
+        .tarjeta {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 3px 12px #183c1b12;
+            border-top: 4px solid #37a568;
+        }
+
+        .tarjeta p {
+            color: #637568;
+            margin-bottom: 15px;
+        }
+
+        .valor {
+            font-size: 28px;
+            font-weight: bold;
+            color: #176b45;
+        }
+
+        .unidad {
+            font-size: 14px;
+            color: #637568;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 28px;
+            box-shadow: 0 3px 12px #183c1b12;
+        }
+
+        .panel h2 {
+            margin-bottom: 20px;
+        }
+
+        .formulario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd9cc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            background: #218653;
+            color: white;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #145c39;
+        }
+
+        .boton {
+            margin-top: 20px;
+        }
+
+        .tabla-contenedor {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 550px;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 13px;
+            border-bottom: 1px solid #e1eae1;
+        }
+
+        th {
+            background: #eaf4eb;
+            color: #176b45;
+        }
+
+        #mensaje {
+            margin-top: 15px;
+            color: #176b45;
+            font-weight: bold;
+        }
+
+        footer {
+            background: #174c34;
+            color: white;
+            text-align: center;
+            padding: 22px;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🌿 ECOGUARD</h1>
+        <p>Sistema de monitoreo ambiental</p>
+    </header>
+
+    <nav>
+        <a href="#inicio">Inicio</a>
+        <a href="#registro">Registrar medición</a>
+        <a href="#historial">Historial</a>
+    </nav>
+
+    <main>
+        <section class="bienvenida" id="inicio">
+            <h2>Panel de monitoreo ambiental</h2>
+            <p>Registra y consulta las condiciones ambientales de tu entorno.</p>
+        </section>
+
+        <section class="tarjetas">
+            <div class="tarjeta">
+                <p>🌡️ Temperatura</p>
+                <div class="valor" id="temperaturaActual">-- <span class="unidad">°C</span></div>
+            </div>
+
+            <div class="tarjeta">
+                <p>💧 Humedad del aire</p>
+                <div class="valor" id="aireActual">-- <span class="unidad">%</span></div>
+            </div>
+
+            <div class="tarjeta">
+                <p>🌱 Humedad del suelo</p>
+                <div class="valor" id="sueloActual">-- <span class="unidad">%</span></div>
+            </div>
+
+            <div class="tarjeta">
+                <p>☀️ Nivel de luz</p>
+                <div class="valor" id="luzActual">-- <span class="unidad">lux</span></div>
+            </div>
+        </section>
+
+        <section class="panel" id="registro">
+            <h2>Registrar medición ambiental</h2>
+
+            <form id="formularioMedicion">
+                <div class="formulario">
+                    <div>
+                        <label for="temperatura">Temperatura (°C)</label>
+                        <input type="number" id="temperatura" step="any" required>
+                    </div>
+
+                    <div>
+                        <label for="humedadAire">Humedad del aire (%)</label>
+                        <input type="number" id="humedadAire" min="0" max="100" step="any" required>
+                    </div>
+
+                    <div>
+                        <label for="humedadSuelo">Humedad del suelo (%)</label>
+                        <input type="number" id="humedadSuelo" min="0" max="100" step="any" required>
+                    </div>
+
+                    <div>
+                        <label for="nivelLuz">Nivel de luz (lux)</label>
+                        <input type="number" id="nivelLuz" min="0" step="any" required>
+                    </div>
+                </div>
+
+                <button class="boton" type="submit">Registrar medición</button>
+                <p id="mensaje" role="status"></p>
+            </form>
+        </section>
+
+        <section class="panel" id="historial">
+            <h2>Historial de mediciones</h2>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha y hora</th>
+                            <th>Temperatura</th>
+                            <th>Humedad del aire</th>
+                            <th>Humedad del suelo</th>
+                            <th>Nivel de luz</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historialMediciones">
+                        <tr>
+                            <td colspan="5">Todavía no hay mediciones registradas.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 ECOGUARD | Cuidemos el medio ambiente 🌎</p>
+    </footer>
+
+    <script>
+        const formulario = document.getElementById("formularioMedicion");
+        const mensaje = document.getElementById("mensaje");
+        const historial = document.getElementById("historialMediciones");
+
+        let mediciones = JSON.parse(localStorage.getItem("ecoguardMediciones") || "[]");
+
+        function mostrarMediciones() {
+            historial.replaceChildren();
+
+            if (mediciones.length === 0) {
+                const fila = historial.insertRow();
+                const celda = fila.insertCell();
+                celda.colSpan = 5;
+                celda.textContent = "Todavía no hay mediciones registradas.";
+                return;
+            }
+
+            mediciones.forEach(function(m) {
+                const fila = historial.insertRow();
+                [
+                    m.fecha,
+                    m.temperatura + " °C",
+                    m.aire + " %",
+                    m.suelo + " %",
+                    m.luz + " lux"
+                ].forEach(function(valor) {
+                    fila.insertCell().textContent = valor;
+                });
+            });
+        }
+
+        function mostrarUltimaMedicion() {
+            if (mediciones.length === 0) return;
+
+            const m = mediciones[0];
+            document.getElementById("temperaturaActual").textContent = m.temperatura + " °C";
+            document.getElementById("aireActual").textContent = m.aire + " %";
+            document.getElementById("sueloActual").textContent = m.suelo + " %";
+            document.getElementById("luzActual").textContent = m.luz + " lux";
+        }
+
+        formulario.addEventListener("submit", function(evento) {
+            evento.preventDefault();
+
+            const temperatura = Number(document.getElementById("temperatura").value);
+            const aire = Number(document.getElementById("humedadAire").value);
+            const suelo = Number(document.getElementById("humedadSuelo").value);
+            const luz = Number(document.getElementById("nivelLuz").value);
+
+            if (aire < 0 || aire > 100 || suelo < 0 || suelo > 100 || luz < 0) {
+                mensaje.textContent = "Revisa los valores ingresados.";
+                return;
+            }
+
+            const medicion = {
+                fecha: new Date().toLocaleString("es-CO"),
+                temperatura: temperatura,
+                aire: aire,
+                suelo: suelo,
+                luz: luz
+            };
+
+            mediciones.unshift(medicion);
+            localStorage.setItem("ecoguardMediciones", JSON.stringify(mediciones));
+
+            mostrarMediciones();
+            mostrarUltimaMedicion();
+            formulario.reset();
+            mensaje.textContent = "¡Medición registrada correctamente!";
+        });
+
+        mostrarMediciones();
+        mostrarUltimaMedicion();
+    </script>
+
+</body>
+</html>
+```
